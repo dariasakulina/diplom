@@ -1,11 +1,19 @@
 package ru.iteco.fmhandroid.pages;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+
+import static ru.iteco.fmhandroid.utils.RecyclerViewChildActions.clickChildViewWithId;
 
 import android.view.View;
 
@@ -18,42 +26,38 @@ import ru.iteco.fmhandroid.utils.ToastMatcher;
 
 public class NewsPage {
 
-    // Кнопка "Все новости"
-    private final Matcher<View> allNewsButton =
-            withId(R.id.all_news_text_view);
-
-    // Кнопка "Редактировать"
     private final Matcher<View> editNewsButton =
-            withId(R.id.edit_news_material_button);
+            allOf(
+                    withId(R.id.edit_news_material_button),
+                    isDisplayed()
+            );
 
-    // Кнопка "+"
     private final Matcher<View> addNewsButton =
-            withId(R.id.add_news_image_view);
+            allOf(
+                    withId(R.id.add_news_image_view),
+                    isDisplayed()
+            );
 
-    // Кнопка "Сохранить"
-    private final Matcher<View> saveButton =
-            withId(R.id.save_button);
+    private final int saveButton = R.id.save_button;
 
-    // Поле "Категория"
-    private final Matcher<View> categoryField =
-            withId(R.id.news_item_category_text_auto_complete_text_view);
+    private final int categoryField = R.id.news_item_category_text_input_layout;
 
-    // Экран списка новостей
-    private final Matcher<View> newsList =
-            withId(R.id.news_list_recycler_view);
+    private final int dropDown = R.id.text_input_end_icon;
 
-    /* ---------------- actions ---------------- */
-
-    public void openAllNews() {
-        onView(allNewsButton).perform(click());
-    }
+    private final int newsList = R.id.news_list_recycler_view;
 
     public void clickEdit() {
-        onView(withId(R.id.container_list_news_include))
-                .check(matches(isDisplayed()));
+        onView(editNewsButton).perform(click());
+    }
 
-        onView(editNewsButton)
-                .perform(click());
+    public void clickEditFirstNews() {
+        onView(withId(newsList))
+                .perform(
+                        RecyclerViewActions.actionOnItemAtPosition(
+                                0,
+                                clickChildViewWithId(R.id.edit_news_item_image_view)
+                        )
+                );
     }
 
     public void clickAddNews() {
@@ -61,20 +65,34 @@ public class NewsPage {
     }
 
     public void clickSave() {
-        onView(saveButton).perform(click());
+        onView(withId(saveButton)).perform(click());
     }
 
     public void selectFirstNews() {
-        onView(newsList)
+        onView(withId(newsList))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
-    public void changeCategoryToBirthday() {
-        onView(categoryField).perform(click());
-        onView(withText("День рождения")).perform(click());
+
+    public void openCategoryDropdown() {
+        onView(allOf(
+                withId(dropDown),
+                isDescendantOfA(withId(categoryField)),
+                isDisplayed()
+        )).perform(click());
     }
 
-    /* ---------------- checks ---------------- */
+    public void selectCategoryAtPosition(int position) {
+        onData(anything())
+                .inRoot(isPlatformPopup())
+                .atPosition(position)
+                .perform(click());
+    }
+
+    public void changeCategoryToBirthday() {
+        openCategoryDropdown();
+        selectCategoryAtPosition(1);
+    }
 
     public void checkEmptyFieldsMessage() {
         onView(withText("Заполните пустые поля"))
@@ -83,6 +101,6 @@ public class NewsPage {
     }
 
     public void checkNewsListIsDisplayed() {
-        onView(newsList).check(matches(isDisplayed()));
+        onView(withId(newsList)).check(matches(isDisplayed()));
     }
 }

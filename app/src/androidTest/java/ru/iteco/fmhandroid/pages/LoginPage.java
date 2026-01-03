@@ -38,15 +38,15 @@ public class LoginPage {
 
             onView(withText("Выйти"))
                     .perform(click());
-
+            onView(isRoot()).perform(waitForView(3000));
             onView(withText("Авторизация"))
                     .check(matches(isDisplayed()));
         }
     }
 
     public void login(String login, String password) {
-        checkLoginScreenIsDisplayed();
         onView(isRoot()).perform(waitForView(3000));
+        checkLoginScreenIsDisplayed();
         enterLogin(login);
         enterPassword(password);
         clickLoginButton();
@@ -93,8 +93,8 @@ public class LoginPage {
     }
 
     public void checkLoginScreenIsDisplayed() {
-        onView(isRoot()).perform(waitForView(5000));
-        onView(withText("Авторизация"))
-                .check(matches(isDisplayed()));
+        onView(isRoot()).perform(waitForView(3000));
+        onView(withId(R.id.enter_button)).check(matches(isDisplayed()));
+        onView(withText("Авторизация")).check(matches(isDisplayed()));
     }
 }

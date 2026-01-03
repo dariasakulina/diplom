@@ -28,6 +28,7 @@ public class NavigationTests {
         loginPage = new LoginPage();
         navigationPage = new NavigationPage();
 
+        loginPage.openLoginScreenIfNeeded();
         loginPage.login("login2", "password2");
     }
 

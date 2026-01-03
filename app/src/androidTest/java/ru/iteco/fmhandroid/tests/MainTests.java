@@ -33,6 +33,7 @@ public class MainTests {
         navigationPage = new NavigationPage();
         mainPage = new MainPage();
 
+        loginPage.openLoginScreenIfNeeded();
         loginPage.login("login2", "password2");
     }
 
@@ -40,6 +41,11 @@ public class MainTests {
     public void tearDown() {
         loginPage.logoutIfLoggedIn();
     }
+
+    /**
+     * MAIN_002
+     * Сворачивание/разворачивание блока новостей
+     */
 
     @Test
     public void shouldExpandAndCollapseNewsBlock() {
@@ -51,6 +57,11 @@ public class MainTests {
 
         mainPage.checkNewsBlockIsDisplayed();
     }
+
+    /**
+     * MAIN_003
+     * Переход в "Новости" через "Все новости" и возврат на главную
+     */
 
     @Test
     public void shouldOpenNewsFromAllNewsButtonAndReturnToMain() {
