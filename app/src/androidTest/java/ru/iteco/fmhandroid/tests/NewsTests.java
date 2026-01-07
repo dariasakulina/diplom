@@ -41,6 +41,33 @@ public class NewsTests {
     }
 
     /**
+     * NEWS_001
+     * Создание новости
+     */
+
+    @Test
+    public void shouldCreateNewsWithValidData() {
+
+        navigationPage.openNavigationMenu();
+        navigationPage.clickNews();
+
+        newsPage.clickEdit();
+        newsPage.clickAddNews();
+
+        newsPage.openCategoryDropdown();
+        newsPage.selectCategory("Объявление");
+
+        newsPage.confirmPublishDate();
+        newsPage.confirmPublishTime();
+
+        newsPage.enterDescription("Добавление новости");
+
+        newsPage.clickSave();
+
+        newsPage.checkNewsListIsDisplayed();
+    }
+
+    /**
      * NEWS_003
      * Создание "пустой" новости
      */
@@ -73,7 +100,7 @@ public class NewsTests {
         newsPage.selectFirstNews();
         newsPage.clickEditFirstNews();
 
-        newsPage.changeCategoryToBirthday();
+        newsPage.changeCategoryRandomly();
         newsPage.clickSave();
 
         newsPage.checkNewsListIsDisplayed();
