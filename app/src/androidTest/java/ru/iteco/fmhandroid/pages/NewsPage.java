@@ -25,6 +25,7 @@ import org.hamcrest.Matcher;
 
 import java.util.Random;
 
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.utils.ToastMatcher;
 
@@ -59,10 +60,12 @@ public class NewsPage {
     private final int OK = android.R.id.button1;
 
     public void clickEdit() {
+        Allure.step("Нажать кнопку «Редактировать новости» (панель управления)");
         onView(editNewsButton).perform(click());
     }
 
     public void clickEditFirstNews() {
+        Allure.step("Нажать иконку редактирования у первой новости");
         onView(withId(newsList))
                 .perform(
                         RecyclerViewActions.actionOnItemAtPosition(
@@ -73,20 +76,23 @@ public class NewsPage {
     }
 
     public void clickAddNews() {
+        Allure.step("Нажать кнопку «Добавить новость» (+)");
         onView(addNewsButton).perform(click());
     }
 
     public void clickSave() {
+        Allure.step("Нажать кнопку «Сохранить»");
         onView(withId(saveButton)).perform(click());
     }
 
     public void selectFirstNews() {
+        Allure.step("Выбрать первую новость в списке");
         onView(withId(newsList))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
-
     public void openCategoryDropdown() {
+        Allure.step("Открыть выпадающий список категорий (нажать на стрелку)");
         onView(allOf(
                 withId(dropDown),
                 isDescendantOfA(withId(categoryField)),
@@ -94,26 +100,22 @@ public class NewsPage {
         )).perform(click());
     }
 
-    public void selectCategoryAtPosition(int position) {
-        onData(anything())
-                .inRoot(isPlatformPopup())
-                .atPosition(position)
-                .perform(click());
-    }
-
     public void selectCategory(String category) {
+        Allure.step("Выбрать категорию: " + category);
         onView(withText(category))
                 .inRoot(isPlatformPopup())
                 .perform(click());
     }
 
     public void changeCategoryRandomly() {
+        Allure.step("Сменить категорию новости случайным образом");
         openCategoryDropdown();
         selectRandomCategory(4);
     }
 
     private void selectRandomCategory(int categoriesCount) {
         int position = new Random().nextInt(categoriesCount);
+        Allure.step("Сменить категорию новости случайным образом");
         onData(anything())
                 .inRoot(isPlatformPopup())
                 .atPosition(position)
@@ -121,6 +123,7 @@ public class NewsPage {
     }
 
     public void confirmPublishDate() {
+        Allure.step("Заполнить поле «Дата публикации» (открыть и подтвердить по умолчанию)");
         onView(withId(publishDateField))
                 .check(matches(isDisplayed()))
                 .perform(click());
@@ -131,6 +134,7 @@ public class NewsPage {
     }
 
     public void confirmPublishTime() {
+        Allure.step("Заполнить поле «Время» (открыть и подтвердить по умолчанию)");
         onView(withId(publishTimeField))
                 .check(matches(isDisplayed()))
                 .perform(click());
@@ -141,18 +145,21 @@ public class NewsPage {
     }
 
     public void enterDescription(String text) {
+        Allure.step("Заполнить поле «Описание»");
         onView(withId(descriptionField))
                 .check(matches(isDisplayed()))
                 .perform(replaceText(text), closeSoftKeyboard());
     }
 
     public void checkEmptyFieldsMessage() {
+        Allure.step("Проверить, что отображается сообщение (toast) «Заполните пустые поля»");
         onView(withText("Заполните пустые поля"))
                 .inRoot(new ToastMatcher())
                 .check(matches(isDisplayed()));
     }
 
     public void checkNewsListIsDisplayed() {
+        Allure.step("Проверить, что отображается список новостей");
         onView(withId(newsList)).check(matches(isDisplayed()));
     }
 }

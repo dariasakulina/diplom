@@ -1,0 +1,69 @@
+{
+    "name": "allureSmoke",
+    "start": 1767817848592,
+    "stop": 1767817848771,
+    "stage": "finished",
+    "description": null,
+    "descriptionHtml": null,
+    "status": "passed",
+    "statusDetails": null,
+    "steps": [
+        {
+            "name": "Шаг: Allure подключён и работает",
+            "start": 1767817848596,
+            "stop": 1767817848596,
+            "stage": "finished",
+            "description": null,
+            "descriptionHtml": null,
+            "status": "passed",
+            "statusDetails": null,
+            "steps": [
+            ],
+            "attachments": [
+            ],
+            "parameters": [
+            ]
+        }
+    ],
+    "attachments": [
+    ],
+    "parameters": [
+    ],
+    "uuid": "7bf1765a-fef0-4fec-bf41-1917cb275fff",
+    "historyId": "cd9e464a85ead330c366a4865c865ad0",
+    "fullName": "ru.iteco.fmhandroid.tests.AllureSmokeTest.allureSmoke",
+    "labels": [
+        {
+            "name": "package",
+            "value": "ru.iteco.fmhandroid.tests"
+        },
+        {
+            "name": "testClass",
+            "value": "ru.iteco.fmhandroid.tests.AllureSmokeTest"
+        },
+        {
+            "name": "testMethod",
+            "value": "allureSmoke"
+        },
+        {
+            "name": "suite",
+            "value": "ru.iteco.fmhandroid.tests.AllureSmokeTest"
+        },
+        {
+            "name": "host",
+            "value": "localhost"
+        },
+        {
+            "name": "thread",
+            "value": "Instr: io.qameta.allure.android.runners.AllureAndroidJUnitRunner(60066)"
+        },
+        {
+            "name": "framework",
+            "value": "junit4"
+        },
+        {
+            "name": "language",
+            "value": "kotlin"
+        }
+    ]
+}

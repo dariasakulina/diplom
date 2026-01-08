@@ -10,6 +10,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.qameta.allure.kotlin.Description;
+import io.qameta.allure.kotlin.Epic;
+import io.qameta.allure.kotlin.Feature;
+import io.qameta.allure.kotlin.Story;
+import io.qameta.allure.kotlin.junit4.DisplayName;
 import ru.iteco.fmhandroid.pages.MainPage;
 import ru.iteco.fmhandroid.ui.AppActivity;
 import ru.iteco.fmhandroid.pages.LoginPage;
@@ -17,6 +22,8 @@ import ru.iteco.fmhandroid.pages.NavigationPage;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
+@Epic("FMHAndroid")
+@Feature("Главная")
 public class MainTests {
 
     private LoginPage loginPage;
@@ -48,6 +55,9 @@ public class MainTests {
      */
 
     @Test
+    @DisplayName("MAIN_002: Свернуть и развернуть блок новостей на главной")
+    @Story("Работа с блоком новостей")
+    @Description("Проверяем, что блок новостей на главном экране сворачивается и разворачивается по кнопке.")
     public void shouldExpandAndCollapseNewsBlock() {
 
         navigationPage.checkNewsScreenIsOpened();
@@ -64,6 +74,9 @@ public class MainTests {
      */
 
     @Test
+    @DisplayName("MAIN_003: Открыть «Все новости» и вернуться на главную")
+    @Story("Переходы между экранами")
+    @Description("Переходим в раздел новостей через кнопку «Все новости» на главной и возвращаемся обратно через меню.")
     public void shouldOpenNewsFromAllNewsButtonAndReturnToMain() {
 
         mainPage.clickAllNews();
