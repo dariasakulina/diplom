@@ -4,8 +4,11 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import static ru.iteco.fmhandroid.utils.WaitForViewAction.waitForView;
 
 import io.qameta.allure.kotlin.Allure;
 
@@ -23,6 +26,7 @@ public class NavigationPage {
 
     public void openNavigationMenu() {
         Allure.step("Открыть меню навигации (бургер)");
+        onView(isRoot()).perform(waitForView(3000));
         onView(withId(MENU_BUTTON))
                 .check(matches(isDisplayed()))
                 .perform(click());
@@ -72,6 +76,7 @@ public class NavigationPage {
 
     public void checkNewsScreenIsOpened() {
         Allure.step("Проверить, что открыт экран «Новости»");
+        onView(isRoot()).perform(waitForView(3000));
         onView(withText("Новости"))
                 .check(matches(isDisplayed()));
     }
