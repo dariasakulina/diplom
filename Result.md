@@ -61,6 +61,10 @@
 Один автотест завершился с ошибкой по причине обнаруженного дефекта приложения.
 Данный дефект был зафиксирован и оформлен в виде баг-репорта.
 
+![Allure1](https://github.com/user-attachments/assets/6a40900d-aea9-4e9c-abbb-b8f5166466ae)
+![Allure2](https://github.com/user-attachments/assets/de5c4119-c533-4e82-aab6-3fbaa0276ee4)
+![Allure3](https://github.com/user-attachments/assets/a932f4b1-010b-4b52-bfc5-4bd799cc43ca)
+
 ---
 
 ## 4. Найденные дефекты
