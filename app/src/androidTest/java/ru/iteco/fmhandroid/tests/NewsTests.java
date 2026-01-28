@@ -1,11 +1,8 @@
 package ru.iteco.fmhandroid.tests;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,36 +12,21 @@ import io.qameta.allure.kotlin.Feature;
 import io.qameta.allure.kotlin.Story;
 import io.qameta.allure.kotlin.junit4.DisplayName;
 import ru.iteco.fmhandroid.pages.NewsPage;
-import ru.iteco.fmhandroid.ui.AppActivity;
-import ru.iteco.fmhandroid.pages.LoginPage;
 import ru.iteco.fmhandroid.pages.NavigationPage;
+import ru.iteco.fmhandroid.utils.TestData;
 
 @RunWith(AndroidJUnit4.class)
 @Epic("FMHAndroid")
 @Feature("Новости")
-public class NewsTests {
+public class NewsTests extends BaseTest {
 
-    @Rule
-    public ActivityScenarioRule<AppActivity> activityRule =
-            new ActivityScenarioRule<>(AppActivity.class);
-
-    private LoginPage loginPage;
     private NewsPage newsPage;
     private NavigationPage navigationPage;
 
     @Before
     public void setUp() {
-        loginPage = new LoginPage();
         newsPage = new NewsPage();
         navigationPage = new NavigationPage();
-
-        loginPage.openLoginScreenIfNeeded();
-        loginPage.login("login2", "password2");
-    }
-
-    @After
-    public void tearDown() {
-        loginPage.logoutIfLoggedIn();
     }
 
     /**
@@ -58,6 +40,10 @@ public class NewsTests {
     @Description("Проверка создания новости с заполнением обязательных полей: категория, дата, время и описание.")
     public void shouldCreateNewsWithValidData() {
 
+        String title = TestData.uniqueTitle(TestData.NEWS_TITLE_CREATE_PREFIX);
+
+        String description = TestData.uniqueDescription(TestData.NEWS_DESCRIPTION_CREATE_PREFIX);
+
         navigationPage.openNavigationMenu();
         navigationPage.clickNews();
 
@@ -65,16 +51,18 @@ public class NewsTests {
         newsPage.clickAddNews();
 
         newsPage.openCategoryDropdown();
-        newsPage.selectCategory("Объявление");
+        newsPage.selectCategory(TestData.NEWS_CATEGORY_ANNOUNCEMENT);
+
+        newsPage.enterTitle(title);
 
         newsPage.confirmPublishDate();
         newsPage.confirmPublishTime();
 
-        newsPage.enterDescription("Добавление новости");
+        newsPage.enterDescription(description);
 
         newsPage.clickSave();
 
-        newsPage.checkNewsListIsDisplayed();
+        newsPage.checkNewsWithTitleDisplayed(title);;
     }
 
     /**
@@ -113,12 +101,18 @@ public class NewsTests {
         navigationPage.clickNews();
 
         newsPage.clickEdit();
+
         newsPage.selectFirstNews();
         newsPage.clickEditFirstNews();
 
-        newsPage.changeCategoryRandomly();
+        newsPage.openCategoryDropdown();
+        newsPage.selectCategory(TestData.NEWS_CATEGORY_BIRTHDAY);
+
         newsPage.clickSave();
 
         newsPage.checkNewsListIsDisplayed();
+
+        newsPage.clickEditFirstNews();
+        newsPage.checkCategoryFieldHasValue(TestData.NEWS_CATEGORY_BIRTHDAY);
     }
 }

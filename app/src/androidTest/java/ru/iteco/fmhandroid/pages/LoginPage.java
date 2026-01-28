@@ -111,4 +111,17 @@ public class LoginPage {
         onView(withId(R.id.enter_button)).check(matches(isDisplayed()));
         onView(withText("Авторизация")).check(matches(isDisplayed()));
     }
+
+    public boolean isLoggedIn() {
+        Allure.step("Проверить, что пользователь авторизован");
+        try {
+            onView(isRoot()).perform(waitForView(1500));
+            onView(withId(R.id.authorization_image_button))
+                    .check(matches(isDisplayed()));
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
 }

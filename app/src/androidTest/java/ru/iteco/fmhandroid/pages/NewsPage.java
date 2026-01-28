@@ -1,29 +1,28 @@
 package ru.iteco.fmhandroid.pages;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
 
 import static ru.iteco.fmhandroid.utils.RecyclerViewChildActions.clickChildViewWithId;
+import static ru.iteco.fmhandroid.utils.WaitForViewAction.waitForView;
 
 import android.view.View;
 
 import androidx.test.espresso.contrib.RecyclerViewActions;
 
 import org.hamcrest.Matcher;
-
-import java.util.Random;
 
 import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
@@ -50,6 +49,8 @@ public class NewsPage {
     private final int dropDown = R.id.text_input_end_icon;
 
     private final int newsList = R.id.news_list_recycler_view;
+
+    private final int titleField = R.id.news_item_title_text_input_edit_text;
 
     private final int descriptionField = R.id.news_item_description_text_input_edit_text;
 
@@ -92,7 +93,7 @@ public class NewsPage {
     }
 
     public void openCategoryDropdown() {
-        Allure.step("Открыть выпадающий список категорий (нажать на стрелку)");
+        Allure.step("Открыть выпадающий список категорий");
         onView(allOf(
                 withId(dropDown),
                 isDescendantOfA(withId(categoryField)),
@@ -104,22 +105,15 @@ public class NewsPage {
         Allure.step("Выбрать категорию: " + category);
         onView(withText(category))
                 .inRoot(isPlatformPopup())
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
-    public void changeCategoryRandomly() {
-        Allure.step("Сменить категорию новости случайным образом");
-        openCategoryDropdown();
-        selectRandomCategory(4);
-    }
-
-    private void selectRandomCategory(int categoriesCount) {
-        int position = new Random().nextInt(categoriesCount);
-        Allure.step("Сменить категорию новости случайным образом");
-        onData(anything())
-                .inRoot(isPlatformPopup())
-                .atPosition(position)
-                .perform(click());
+    public void enterTitle(String title) {
+        Allure.step("Ввести заголовок новости: " + title);
+        onView(withId(titleField))
+                .check(matches(isDisplayed()))
+                .perform(replaceText(title), closeSoftKeyboard());
     }
 
     public void confirmPublishDate() {
@@ -144,11 +138,11 @@ public class NewsPage {
                 .perform(click());
     }
 
-    public void enterDescription(String text) {
-        Allure.step("Заполнить поле «Описание»");
+    public void enterDescription(String description) {
+        Allure.step("Ввести описание новости: " + description);
         onView(withId(descriptionField))
                 .check(matches(isDisplayed()))
-                .perform(replaceText(text), closeSoftKeyboard());
+                .perform(replaceText(description), closeSoftKeyboard());
     }
 
     public void checkEmptyFieldsMessage() {
@@ -161,5 +155,27 @@ public class NewsPage {
     public void checkNewsListIsDisplayed() {
         Allure.step("Проверить, что отображается список новостей");
         onView(withId(newsList)).check(matches(isDisplayed()));
+    }
+
+    public void checkCategoryFieldHasValue(String expectedCategory) {
+        Allure.step("Проверить, что в поле категории указано: " + expectedCategory);
+        onView(
+                allOf(
+                        withId(categoryField),
+                        hasDescendant(withText(expectedCategory))
+                )
+        ).check(matches(isDisplayed()));
+    }
+
+    public void checkNewsWithTitleDisplayed(String title) {
+        Allure.step("Проверить, что в списке отображается новость с заголовком: " + title);
+        onView(isRoot()).perform(waitForView(3000));
+        onView(withId(newsList))
+                .perform(RecyclerViewActions.scrollTo(
+                        hasDescendant(withText(title))
+                ));
+
+        onView(withText(title))
+                .check(matches(isDisplayed()));
     }
 }
